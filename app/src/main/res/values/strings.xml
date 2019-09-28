@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Binero Solver</string>
+    <string name="action_size">Size</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_reset">Reset</string>
+    <string name="action_scan">Scan</string>
+    <string name="dialog_change_size">Change Size</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="action_save">Save</string>
+</resources>
