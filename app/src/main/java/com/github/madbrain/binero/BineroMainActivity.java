@@ -1,21 +1,20 @@
 package com.github.madbrain.binero;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-/**
- * https://guides.codepath.com/android/using-the-app-toolbar
- */
+
 public class BineroMainActivity extends AppCompatActivity implements
         ChangeSizeFragment.ChangeSizeListener, BineroView.Listener {
 
     private BineroGrid grid;
+    private BineroGrid solution;
     private BineroView bineroView;
     private ViewMode mode = ViewMode.HINT;
+    private Selection selection = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,10 @@ public class BineroMainActivity extends AppCompatActivity implements
             case R.id.action_save:
                 setMode(ViewMode.HINT);
                 invalidateOptionsMenu();
-                // TODO solve binero
+                solution = new BineroSolver().solve(grid);
+                if (solution == null) {
+                    Toast.makeText(this, "Invalid grid", Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case R.id.action_scan:
@@ -94,7 +96,13 @@ public class BineroMainActivity extends AppCompatActivity implements
             grid.cycle(i, j);
             bineroView.invalidate();
         } else {
-          // TODO select two times to reveal hint
+            if (solution != null && selection != null && selection.isAt(i, j)) {
+                this.grid.set(i, j, this.solution.get(i, j));
+                bineroView.invalidate();
+                selection = null;
+            } else {
+                selection = new Selection(i, j);
+            }
         }
     }
 
@@ -102,5 +110,6 @@ public class BineroMainActivity extends AppCompatActivity implements
     public void onDeselectPoint() {
 
     }
+
 }
 
